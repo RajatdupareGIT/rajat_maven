@@ -1,0 +1,3 @@
+CLI 
+bucket distruction
+aws s3api delete-bucket --bucket my-bucket --region us-east-1

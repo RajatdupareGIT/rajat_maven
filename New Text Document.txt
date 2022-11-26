@@ -1,0 +1,76 @@
+IAM keys 
+
+Access key ID
+AKIA27PV333XJZJPY67F 
+
+
+Secret access key
+S6UTeyIrhd+sVYgXfQA7imf1SSG3iM7h6UPV6aKR
+
+
+ami
+
+05c8ca4485f8b138a
+
+
+
+provider "aws" {
+   region = "ap-south-1"
+   access_key = "AKIA27PV333XJZJPY67F"
+   secret_key = "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
+"
+}
+
+resource "aws_instance" "AWSServer" {
+  count = "3"
+  ami = "ami-05c8ca4485f8b138a"
+  instance_type = "t2.micro"
+  key_name = "Server_Keypair"
+  security_groups = ["Rajat_security"]
+  tags = {
+   Name = "MyEC2-VM"
+  }
+}
+
+
+################################################################
+
+
+
+
+vars.tf
+
+variable "ami"{
+ description="Amazon Machine Image value"
+ default = "ami-05c8ca4485f8b138a"
+}
+
+variable "instance_type"{
+   description="Amazon Instance Type"
+   default = "t2.micro"
+}
+
+variable "instances_count"{
+	description="Total No.of Instances"
+	default = "2"
+}
+
+
+main.tf
+
+provider "aws" {
+  region = "ap-south-1"
+  access_key = "AKIA27PV333XJZJPY67F"
+  secret_key = "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"
+}
+
+resource "aws_instance" "AWSServer" {
+  count="${var.instances_count}"
+  ami = "${var.ami}"
+  instance_type = "${var.instance_type}"
+  key_name = "Server_Keypair"
+  security_groups = ["Rajat_security"]
+  tags = {
+   Name = "EC2 VM - ${count.index}"
+  }
+}
